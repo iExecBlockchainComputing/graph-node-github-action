@@ -1,0 +1,84 @@
+name: 'Graph Node in GitHub Actions'
+description: 'Start a Graph Node in GitHub Actions'
+
+branding:
+  icon: 'trending-up'
+  color: 'yellow'
+
+inputs:
+  image:
+    description: 'The Graph Node Docker image to use'
+    required: false
+    default: 'graphprotocol/graph-node'
+
+  version:
+    description: 'The Graph Node Docker image version to use'
+    required: false
+    default: 'latest'
+
+  container-name:
+    description: 'The name of the container'
+    required: false
+    default: 'graph-node'
+
+  port:
+    description: 'The port to expose the Graph Node'
+    required: false
+    default: '8000'
+
+  admin-port:
+    description: 'The port to expose the Graph Node admin'
+    required: false
+    default: '8020'
+
+  postgres_host:
+    description: 'The PostgreSQL connection string'
+    required: true
+
+  postgres_user:
+    description: 'The PostgreSQL user'
+    required: true
+
+  postgres_pass:
+    description: 'The PostgreSQL password'
+    required: true
+
+  postgres_port:
+    description: 'The PostgreSQL port'
+    required: false
+    default: '5432'
+
+  postgres_db:
+    description: 'The PostgreSQL database'
+    required: true
+
+  ipfs_host:
+    description: 'The IPFS host'
+    required: true
+
+  ipfs_port:
+    description: 'The IPFS port'
+    required: false
+    default: '5001'
+
+  ethereum:
+    description: 'The Ethereum network to connect to'
+    required: true
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.image }}
+    - ${{ inputs.version }}
+    - ${{ inputs.container-name }}
+    - ${{ inputs.port }}
+    - ${{ inputs.admin-port }}
+    - ${{ inputs.postgres_host }}
+    - ${{ inputs.postgres_user }}
+    - ${{ inputs.postgres_pass }}
+    - ${{ inputs.postgres_port }}
+    - ${{ inputs.postgres_db }}
+    - ${{ inputs.ipfs_host }}
+    - ${{ inputs.ipfs_port }}
+    - ${{ inputs.ethereum }}

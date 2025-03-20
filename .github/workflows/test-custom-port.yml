@@ -1,0 +1,62 @@
+name: Test Custom Port
+
+on: [pull_request]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_USER: graphnode
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: graphnode-db
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      # Start IPFS server
+      - name: IPFS
+        run: |
+          docker run -d --network host --name ipfs -p 5001:5001 ipfs/kubo:v0.17.0
+
+      - name: Test ipfs
+        run: |
+          docker logs ipfs
+
+      # Start Anvil (Ethereum fork simulation)
+      - name: Start Anvil
+        run: |
+          anvil --host 0.0.0.0 --port 8545 --block-time 1 --hardfork berlin --fork-url $(cat local-stack-env/BELLECOUR_FORK_URL) --fork-block-number $(cat local-stack-env/BELLECOUR_FORK_BLOCK) --chain-id 134 --gas-limit 6700000 --gas-price 0 &
+
+      # Start Graph Node server
+      - name: Start Graph Node server
+        uses: ./
+        with:
+          port: 1234
+          admin-port: 4321
+          postgres_host: localhost
+          postgres_user: graphnode
+          postgres_db: graphnode-db
+          postgres_pass: password
+          ipfs_host: ipfs
+          ethereum: 'bellecour:http://localhost:8545'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm test
+        env:
+          CI: true

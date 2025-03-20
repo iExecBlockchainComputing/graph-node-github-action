@@ -1,0 +1,25 @@
+inputs:
+  image:
+    type: string
+  container-name:
+    type: string
+  port:
+    type: integer
+  admin-port:
+    type: integer
+  postgres_host:
+    type: string
+  postgres_user:
+    type: string
+  postgres_pass:
+    type: string
+  postgres_port:
+    type: integer
+  postgres_db:
+    type: string
+  ipfs_host:
+    type: string
+  ipfs_port:
+    type: integer
+  ethereum:
+    type: string
