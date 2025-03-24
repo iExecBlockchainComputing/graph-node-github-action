@@ -29,7 +29,7 @@ jobs:
       # Start IPFS server
       - name: IPFS
         run: |
-          docker run -d --network host --name ipfs -p 5001:5001 ipfs/kubo:v0.17.0
+          docker run -d --name ipfs -p 5001:5001 ipfs/kubo:v0.17.0
 
       - name: Test ipfs
         run: |
@@ -46,7 +46,7 @@ jobs:
         with:
           port: 1234
           admin-port: 4321
-          postgres_host: localhost
+          postgres_host: postgres
           postgres_user: graphnode
           postgres_db: graphnode-db
           postgres_pass: password
