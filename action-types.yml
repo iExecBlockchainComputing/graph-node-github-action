@@ -1,6 +1,8 @@
 inputs:
   image:
     type: string
+  version:
+    type: string
   container-name:
     type: string
   port:
