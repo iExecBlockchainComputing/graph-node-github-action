@@ -118,6 +118,7 @@ docker run -d \
   -e postgres_db=${GRAPH_NODE_POSTGRES_DB} \
   -e ipfs=${GRAPH_NODE_IPFS_HOST}:${GRAPH_NODE_IPFS_PORT} \
   -e ethereum=${GRAPH_NODE_ETHEREUM} \
+  -e GRAPH_LOG=debug \
   ${GRAPH_NODE_IMAGE}:${GRAPH_NODE_VERSION}
 
 if [ $? -ne 0 ]; then

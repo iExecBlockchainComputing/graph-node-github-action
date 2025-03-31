@@ -20,16 +20,14 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+          --network host
       ipfs:
         image: ipfs/kubo:v0.17.0
         ports:
           - 5001:5001
+        options: >-
+          --network host
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-
       - name: Start Anvil
         uses: iExecBlockchainComputing/anvil-github-action@v1.0.0
 
@@ -45,6 +43,10 @@ jobs:
           postgres_pass: password
           ipfs_host: ipfs
           ethereum: 'bellecour:http://localhost:8545'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
 
       - name: Install dependencies
         run: npm install
