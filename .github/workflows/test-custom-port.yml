@@ -20,20 +20,15 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+      ipfs:
+        image: ipfs/kubo:v0.17.0
+        ports:
+          - 5001:5001
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-
-      # Start IPFS server
-      - name: IPFS
-        run: |
-          docker run -d --name ipfs -p 5001:5001 ipfs/kubo:v0.17.0
-
-      - name: Test ipfs
-        run: |
-          docker logs ipfs
 
       - name: Start Anvil
         uses: iExecBlockchainComputing/anvil-github-action@v1.0.0
