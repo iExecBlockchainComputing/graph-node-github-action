@@ -31,6 +31,7 @@ jobs:
 
       - name: Wait kubo
         run: |
+          chmod +x ./wait-for-it.sh
           ./wait-for-it.sh ipfs:5001 -t 0
 
       # Start Graph Node server
