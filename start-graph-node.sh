@@ -89,20 +89,9 @@ echo "::endgroup::"
 
 wait_for_graph_node () {
   echo "::group::Waiting for Graph Node to accept connections"
-  sleep 1
-  TIMER=0
 
-  until docker exec --tty "${GRAPH_NODE_NAME}" curl --silent --fail "http://localhost:${GRAPH_NODE_ADMIN_PORT}" > /dev/null
-  do
-    echo "."
-    sleep 1
-    TIMER=$((TIMER + 1))
-    if [ $TIMER -eq 20 ]; then
-      echo "Graph Node did not initialize within 20 seconds. Exiting."
-      docker logs "${GRAPH_NODE_NAME}"
-      exit 2
-    fi
-  done
+  ./wait-for-it.sh localhost:${GRAPH_NODE_PORT}
+
   echo "::endgroup::"
 }
 
