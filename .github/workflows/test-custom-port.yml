@@ -25,8 +25,13 @@ jobs:
         ports:
           - 5001:5001
     steps:
+      - uses: actions/checkout@v4
       - name: Start Anvil
         uses: iExecBlockchainComputing/anvil-github-action@v1.0.0
+
+      - name: Wait kubo
+        run: |
+          ./wait-for-it.sh ipfs:5001 -t 0
 
       # Start Graph Node server
       - name: Start Graph Node server
