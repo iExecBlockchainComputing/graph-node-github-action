@@ -95,7 +95,7 @@ wait_for_graph_node () {
 
   echo "::group::Waiting for Graph Node to accept connections"
 
-  sh wait-for-it.sh localhost:${GRAPH_NODE_PORT} -t 0
+  bash wait-for-it.sh localhost:${GRAPH_NODE_PORT} -t 0
 
   echo "::endgroup::"
 }
