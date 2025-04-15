@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 echo "::group::Mapping input values"
 # Map input values from the GitHub Actions workflow to shell variables
