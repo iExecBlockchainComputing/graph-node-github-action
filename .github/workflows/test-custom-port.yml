@@ -26,12 +26,13 @@ jobs:
           - 5001:5001
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-
       - name: Start Anvil
         uses: iExecBlockchainComputing/anvil-github-action@v1.0.0
+
+      - name: Wait kubo
+        run: |
+          chmod +x ./wait-for-it.sh
+          ./wait-for-it.sh localhost:5001 -t 0
 
       # Start Graph Node server
       - name: Start Graph Node server
@@ -39,12 +40,17 @@ jobs:
         with:
           port: 1234
           admin-port: 4321
-          postgres_host: postgres
+          postgres_host: 127.0.0.1
           postgres_user: graphnode
           postgres_db: graphnode-db
           postgres_pass: password
-          ipfs_host: ipfs
+          ipfs_host: 127.0.0.1
+          ipfs_port: 5001
           ethereum: 'bellecour:http://localhost:8545'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
 
       - name: Install dependencies
         run: npm install
