@@ -24,6 +24,18 @@ jobs:
         image: ipfs/kubo:v0.17.0
         ports:
           - 5001:5001
+      graphnode:
+        image: graphprotocol/graph-node:latest
+        env:
+          - IPFS: ipfs:5001
+          - POSTGRES_HOST: postgres
+          - POSTGRES_USER: graphnode
+          - POSTGRES_DB: graphnode-db
+          - POSTGRES_PASSWORD: password
+          - ETHEREUM: bellecour:http://localhost:8545
+        ports:
+          - 1234:8000
+          - 4321:8020
     steps:
       - uses: actions/checkout@v4
       - name: Start Anvil
@@ -34,18 +46,18 @@ jobs:
           chmod +x ./wait-for-it.sh
           ./wait-for-it.sh localhost:5001 -t 0
 
-      # Start Graph Node server
-      - name: Start Graph Node server
-        uses: ./
-        with:
-          port: 1234
-          admin-port: 4321
-          postgres_host: postgres
-          postgres_user: graphnode
-          postgres_db: graphnode-db
-          postgres_pass: password
-          ipfs_host: ipfs
-          ethereum: 'bellecour:http://localhost:8545'
+#       # Start Graph Node server
+#       - name: Start Graph Node server
+#         uses: ./
+#         with:
+#           port: 1234
+#           admin-port: 4321
+#           postgres_host: postgres
+#           postgres_user: graphnode
+#           postgres_db: graphnode-db
+#           postgres_pass: password
+#           ipfs_host: ipfs
+#           ethereum: 'bellecour:http://localhost:8545'
 
       - uses: actions/setup-node@v4
         with:
