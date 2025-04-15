@@ -88,6 +88,11 @@ echo "All required parameters are set."
 echo "::endgroup::"
 
 wait_for_graph_node () {
+  echo "::group::Installing bash"
+  apt update
+  apt install -y bash
+  echo "::endgroup::"
+
   echo "::group::Waiting for Graph Node to accept connections"
 
   sh wait-for-it.sh localhost:${GRAPH_NODE_PORT} -t 0
